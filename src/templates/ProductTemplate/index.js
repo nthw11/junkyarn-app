@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { graphql } from 'gatsby';
-import { Layout, ImageGallery } from 'components';
+import { Layout, ImageGallery, ProductQuantityAdder } from 'components';
 import { Grid, SelectWrapper, Price } from './styles';
 import CartContext from 'context/CartContext';
 import { navigate, useLocation } from '@reach/router';
@@ -80,15 +80,25 @@ export default function ProductTemplate(props) {
                   </select>
                 </SelectWrapper>
               )}
-              {!!selectedColorway && <Price>${selectedColorway.price}</Price>}
+              {!!selectedColorway && (
+                <>
+                  <Price>${selectedColorway.price}</Price>
+                  <ProductQuantityAdder
+                    available={selectedColorway.available}
+                    variantId={selectedColorway.id}
+                  />
+                </>
+              )}
             </>
           )}
         </div>
         <div>
-          <ImageGallery
-            selectedColorwayImageId={selectedColorway?.image.id}
-            images={props.data.shopifyProduct.images}
-          />
+          {product?.images.length > 0 && (
+            <ImageGallery
+              selectedColorwayImageId={selectedColorway?.image.id}
+              images={props.data.shopifyProduct.images}
+            />
+          )}
         </div>
       </Grid>
     </Layout>
